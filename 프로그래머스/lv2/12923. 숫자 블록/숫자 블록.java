@@ -1,47 +1,66 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 class Solution {
-    //숫자 0이 적힌 블록들이 설치된 도로에 다른 숫자가 적힌 블록들을 설치
-    //블록에 적힌 번호가 n 일때, 가장 첫 블록은 n*2 번째 위치에 설치, 그 다음은 n*3, ... 위치에 설치
-    //기존에 설치된 블록은 빼고 새로운 블록을 집어 넣는다.
-    //블록은 1이 적힌 블록부터 숫자를 1씩 증가시키며 순서대로 설치한다.
-    //1이 적힌 블록은 2,3,4,5 ...인 위치에 우선 설치
-    //그 후, 2가 적힌 블록은 4,6,8,10,...인 위치에 설치
 
-    public static int[] solution(long begin, long end) {
-        int[] answer = new int[(int)(end - begin) + 1];
+    public int isPrime(long n) {
+        for (int i = 2; i <= Math.sqrt(n); i++) {
+            if (n % i == 0) {
+                return 0;
+            }
+        }
+        return 1;
+    }
 
-        for (int i = (int)begin,idx = 0; i <= end; i++) {
-            answer[idx++] = getMaxDivisorExceptMe(i);
+    // 약수 중에서 자신을 제외하고 가장 큰 수를 리턴
+    // 선형탐색 시간초과 -> 에라토테네스의 채
+    // n이 10억이면, 제곱근은 31000+
+    /*
+        [begin, end] = [100000014, 100000016] 를 테스트했을 때,
+        [1, 1, 6250001]이 아닌 [6, 5, 6250001]이 출력되어야 합니다.
+
+        왜냐하면, 100000014 = 6 * 16666669(소수)이고,
+                100000015 = 5 * 20000003(소수)라서
+        문제의 조건대로라면 각각 6번, 5번 블록이 깔려 있어야 하기 때문입니다.
+     */
+
+    public int divisor(long n){
+        int res = -1;
+
+        for(int i = 2; i <= Math.sqrt(n); i++){
+            if(n % i == 0){
+                res = i;
+
+                if(n / i <= 10000000){
+                    return (int)n / i;
+                }
+            }
+        }
+
+        return res;
+    }
+
+    // begin 과 end 범위가 10억인데 왜 굳이 long을 ?
+    public int[] solution(long begin, long end) {
+
+        int[] answer = new int[(int)end - (int)begin + 1];
+        int ansIdx = 0;
+        // end - begin ≤ 5,000  (N = 5000)
+        // 1. 소수면 1
+        // 2. 소수 아니면 약수 중 자신을 제외하고 가장 큰 수
+        //    -> 2천만 이상일 때는 약수 중 천만 이하의 가장 큰 수
+
+        for(long i = begin; i <= end; i++){
+            // 인덱스 1 예외처리
+            if(i == 1){
+                answer[ansIdx++] = 0;
+                continue;
+            }
+
+            if(isPrime(i) == 1){
+                answer[ansIdx++] = 1;
+            }else{
+                answer[ansIdx++] = divisor(i);
+            }
         }
 
         return answer;
     }
-
-
-    private static int getMaxDivisorExceptMe(int x) {
-        if (x == 1) {
-            return 0;
-        }
-
-        List<Integer> l = new ArrayList<>();
-
-        for (int i = 2; i <= Math.sqrt(x); i++) {
-            if (x % i == 0) {
-                l.add(i);
-                if (x / i <= 10_000_000) {
-                    return x/i;
-                }
-            }
-
-        }
-        if (!l.isEmpty()) {
-            return l.get(l.size() - 1);
-        }
-
-        return 1;
-    }
-
 }
