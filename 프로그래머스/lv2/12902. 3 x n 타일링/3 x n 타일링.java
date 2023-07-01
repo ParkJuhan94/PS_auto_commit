@@ -1,5 +1,3 @@
-//package Programmers.Level_2._3xn타일링;
-
 // https://bbeomgeun.tistory.com/30
 
 class Solution {
@@ -16,13 +14,17 @@ class Solution {
         dp[2] = 3;
 
         for(int i = 4 ; i <= n ; i+=2){
-            dp[i] = (dp[i-2] * 3);
-            for(int j = 0 ; j <= i-4 ; j += 2){
+            dp[i] = (dp[i-2] * 3);  // 기본 도형으로만 
+
+            // special case
+            for(int j = 0 ; j <= i-4 ; j += 2){     
                 dp[i] += (dp[j] * 2) % MOD;
             }
+            
             dp[i] %= MOD;
         }
 
         return (int)(dp[n] % MOD);
     }
 }
+
