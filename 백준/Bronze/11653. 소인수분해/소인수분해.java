@@ -17,16 +17,16 @@ public class Main {
 
         N = Integer.parseInt(st.nextToken());
 
-        // 에라토스테네스의 체 알고리즘
-        double sqrt = Math.sqrt(N);
-        for (int i = 2; i <= N; i++) {
-            if(N % i == 0){
-                System.out.println(i);
-                N /= i;
-                i--;
-            }
+        for(int i = 2; i <= Math.sqrt(N); i++) {
+	        while(N % i == 0) {
+		        System.out.println(i);
+		        N /= i;
+	        }
         }
-
+ 
+        if(N != 1) {
+	        System.out.println(N);
+        }
     }
 
 }
