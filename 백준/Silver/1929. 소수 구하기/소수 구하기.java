@@ -10,28 +10,33 @@ public class Main {
     static int N, M;
 
     public static void main(String[] args) throws IOException {
-      //  System.setIn(new FileInputStream("src/BOJ/Section04/P1929/input.txt"));
+    //    System.setIn(new FileInputStream("src/BOJ/Section04/P1929/input.txt"));
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
 
-        N = Integer.parseInt(st.nextToken());
         M = Integer.parseInt(st.nextToken());
+        N = Integer.parseInt(st.nextToken());
+        boolean[] isPrime = new boolean[N + 1];
 
-        for(int i = N; i <= M; i++){
-            int flag = 0;
-            for(int j = 2; j * j <= i ; j++){
-                if(i % j == 0){
-                    flag = 1;
-                    break;
+        for (int i = 2; i <= N; i++) {
+            isPrime[i] = true;
+        }
+
+        // 에라토스테네스의 체 알고리즘
+        for (int i = 2; i <= Math.sqrt(N); i++) {
+            if (isPrime[i]) {
+                for (int j = i * i; j <= N; j += i) {
+                    isPrime[j] = false;
                 }
-            }
-            if(flag == 0 && i != 1){
-                System.out.println(i);
             }
         }
 
-
+        for (int i = M; i <= N; i++) {
+            if (isPrime[i]) {
+                System.out.println(i);
+            }
+        }
     }
 
 }
