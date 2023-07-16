@@ -1,85 +1,85 @@
-//package BOJ.Section05.P1197;
+package BOJ.Section05.P1197;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
 
 public class Main {
-    static int n,m;
+
+    static int V, E;
     static int[] parent;
-    static PriorityQueue<edge> pq = new PriorityQueue<edge>();
-    static int result = 0;
 
-    public static void main(String[] args) throws Exception{
-        //System.setIn(new FileInputStream("src/BOJ/Section05/P1197/input.txt"));
+    public static void main(String[] args) throws IOException {
+        System.setIn(new FileInputStream("src/BOJ/Section05/P1197/input.txt"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
         StringTokenizer st = new StringTokenizer(br.readLine());
 
-        n = Integer.parseInt(st.nextToken());
-        m = Integer.parseInt(st.nextToken());
+        V = Integer.parseInt(st.nextToken());
+        E = Integer.parseInt(st.nextToken());
 
-        parent = new int[n + 1];
-
-        // 유니온파인드 초기화
-        for(int i = 0; i < n + 1; i++)
+        List<Edge> edges = new ArrayList<>();
+        parent = new int[V + 1];
+        for(int i = 1; i <= V; i++){
             parent[i] = i;
+        }
 
-        for(int i = 0; i < m; i++) {
+        for (int i = 0; i < E; i++) {
             st = new StringTokenizer(br.readLine());
-            pq.add(new edge(Integer.parseInt(st.nextToken()),Integer.parseInt(st.nextToken()),Integer.parseInt(st.nextToken())));
+            int start = Integer.parseInt(st.nextToken());
+            int end = Integer.parseInt(st.nextToken());
+            int weight = Integer.parseInt(st.nextToken());
+
+            edges.add(new Edge(start, end, weight));
         }
 
-        // 시작점과 종료점의 최상위 노드를 find 로 찾아서 겹치면 사이클!
-        // -> continue
-        // 사이클이 아니면 union 으로 연결하고 가중치 v로 더해준다
-        for(int i = 0; i < m; i++) {
-            edge tmp = pq.poll();
+        // 간선을 가중치 기준으로 오름차순 정렬
+        Collections.sort(edges);
 
-            int a = find(tmp.s);
-            int b = find(tmp.e);
+        int totalWeight = 0;
 
-            if(a == b) continue;
-            union(a, b);
-            result += tmp.v;
+        for (Edge edge : edges) {
+            if(find(edge.start) != find(edge.end)) {
+                union(edge.start, edge.end);
+                totalWeight += edge.weight;
+            }
         }
 
-        System.out.println(result);
+        System.out.println(totalWeight);
     }
 
-    // 유니온 파인드
-    public static int find(int a) {
-        if(a == parent[a]) return a;
-        parent[a] = find(parent[a]);
-        return parent[a];
+    public static boolean union(int x, int y) {
+        x = find(x);
+        y = find(y);
+
+        if(x == y) return false;
+
+        // 더 작은 번호의 노드를 부모로 해야한다면
+        if(x <= y) parent[y] = x;
+        else parent[x] = y;
+        return true;
     }
 
-    public static void union(int a,int b) {
-        int aRoot = find(a);
-        int bRoot = find(b);
-
-        if(aRoot != bRoot) {
-            parent[aRoot] = b;
-        }
+    public static int find(int x) {
+        if(parent[x] == x) return x;
+        return find(parent[x]);
     }
 }
 
-// 우선순위 큐에 넣기위해 정렬기준
-class edge implements Comparable<edge>{
-    int s;
-    int e;
-    int v;
+class Edge implements Comparable<Edge> {
+    int start;
+    int end;
+    int weight;
 
-    public edge(int s,int e,int v) {
-        this.s = s;
-        this.e = e;
-        this.v = v;
+    public Edge(int start, int end, int weight) {
+        this.start = start;
+        this.end = end;
+        this.weight = weight;
     }
 
     @Override
-    public int compareTo(edge arg0) {
-        // TODO Auto-generated method stub
-        return arg0.v >= this.v ? -1:1;
+    public int compareTo(Edge other) {
+        return Integer.compare(this.weight, other.weight);
     }
 }
