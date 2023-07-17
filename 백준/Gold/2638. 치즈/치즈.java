@@ -10,12 +10,12 @@ public class Main {
     static int[][] map;
     static int n,m;
     static boolean[][] visited;
-    static int[] dx = {0,0,-1,1};
-    static int[] dy = {-1,1,0,0};
-    static ArrayList<Node> list = new ArrayList<>();
+    static int[] dr = {0,0,-1,1};
+    static int[] dc = {-1,1,0,0};
+    static ArrayList<Point> meltList = new ArrayList<>();
 
     public static void main(String[] args) throws  IOException {
-     //   System.setIn(new FileInputStream("src/BOJ/Section05/P2638/input.txt"));
+       // System.setIn(new FileInputStream("src/BOJ/Section05/P2638/input.txt"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         String[] input = br.readLine().split(" ");
@@ -34,9 +34,10 @@ public class Main {
         }
 
         int ans = 0;
+
         while(true) {
 
-            list.clear();
+            meltList.clear();
             if(gameOver())
                 break;
 
@@ -46,41 +47,40 @@ public class Main {
             // 2. 외부공기와 2면이상 맞닿은 치즈 탐색
             for(int i=0; i<n; i++) {
                 for(int j=0; j<m; j++) {
-                    if(map[i][j]==1 && check(i,j)) {
-                        list.add(new Node(i,j));
+                    if(map[i][j] == 1 && check(i,j)) {
+                        meltList.add(new Point(i,j));
                     }
                 }
             }
 
-            // 3. 녹아야 할 예정인 치즈 녹이기
-            for(Node a: list) {
-                map[a.x][a.y]= 0;
+            // 3. 치즈 녹이기
+            for(Point melt : meltList) {
+                map[melt.r][melt.c] = 0;
             }
 
-            // 4. 외부치즈들 빈칸으로 갱신
-            for(int i=0; i<n; i++) {
-                for(int j=0; j<m; j++) {
-                    if(map[i][j]==2) {
-                        map[i][j]=0;
-                    }
-                }
-            }
+//            // 4. 외부공기들 빈칸으로 갱신
+//            for(int i=0; i<n; i++) {
+//                for(int j=0; j<m; j++) {
+//                    if(map[i][j]==2) {
+//                        map[i][j]=0;
+//                    }
+//                }
+//            }
             ans++;
         }
 
         System.out.println(ans);
     }
 
+    // 2변 이상이 외부공기와 접촉했는지 반환
     public static boolean check(int x, int y) {
-
         int cnt = 0;
         for(int i=0; i<4; i++) {
-            int nx = x+dx[i];
-            int ny = y+dy[i];
+            int nx = x+ dr[i];
+            int ny = y+ dc[i];
 
-            if(isRange(nx,ny) && map[nx][ny]==2) {
+            if(isRange(nx,ny) && map[nx][ny]==2)
                 cnt++;
-            }
         }
 
         if(cnt>=2) {
@@ -99,22 +99,23 @@ public class Main {
     }
 
     public static void bfs(int x, int y) {
-        Queue<Node> q = new LinkedList<>();
+        Queue<Point> q = new LinkedList<>();
         visited = new boolean[n][m];
-        q.add(new Node(x,y));
+        q.add(new Point(x,y));
         visited[x][y] = true;
-        map[x][y]= 2;
+        map[x][y]= 2;   // 외부공기는 2
+
         while(!q.isEmpty()) {
-            Node a = q.poll();
+            Point cur = q.poll();
 
             for(int i=0; i<4; i++) {
-                int nx = a.x+dx[i];
-                int ny = a.y+dy[i];
+                int nr = cur.r + dr[i];
+                int nc = cur.c + dc[i];
 
-                if(isRange(nx,ny) && !visited[nx][ny] && map[nx][ny]==0) {
-                    q.add(new Node(nx,ny));
-                    visited[nx][ny]=  true;
-                    map[nx][ny] = 2;
+                if(isRange(nr,nc) && !visited[nr][nc] && map[nr][nc] != 1) {
+                    q.add(new Point(nr,nc));
+                    visited[nr][nc] = true;
+                    map[nr][nc] = 2;
                 }
             }
         }
@@ -142,10 +143,12 @@ public class Main {
     }
 }
 
-class Node{
-    int x,y;
-    Node(int x, int y){
-        this.x=x;
-        this.y=y;
+class Point {
+    int r;
+    int c;
+
+    Point(int r, int c){
+        this.r = r;
+        this.c = c;
     }
 }
