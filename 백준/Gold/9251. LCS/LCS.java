@@ -39,7 +39,7 @@ public class Main {
             return 0;
 
         if(dp[a][b] == null) {
-            dp[a][b] = 0;
+//            dp[a][b] = 0;
             if(str1[a] == str2[b])
                 dp[a][b] = lcs(a-1, b-1) + 1;
             else
