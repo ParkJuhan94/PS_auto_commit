@@ -13,7 +13,7 @@ public class Main {
     static long ans = 0;
 
     public static void main(String[] args) throws IOException {
-       // System.setIn(new FileInputStream("src/BOJ/Section06/P13305/input.txt"));
+        //System.setIn(new FileInputStream("src/BOJ/Section06/P13305/input.txt"));
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
@@ -30,19 +30,23 @@ public class Main {
             gasStation[i] = Integer.parseInt(st.nextToken());
         }
 
-        for(int i = 0; i < N; i++){
+        for(int i = 0; i < N - 1; i++){
             long distSum = 0;
             int price = gasStation[i];
 
             for(int j = i + 1; j < N; j++){
-                if(gasStation[j] > gasStation[i]){
+                if(gasStation[j] > gasStation[i]){  // 더 비싸져서 이전의 주유소에서 기름을 넣기
                     distSum += dist[j - 1];
-                    i = j;
-                }else{
+                }else{  // 더 싸져서 지금의 주유소에서 기름을 넣기
                     distSum += dist[j - 1];
+                    i = j - 1;
                     break;
                 }
             }
+
+//            System.out.println("price = " + price);
+//            System.out.println("distSum = " + distSum);
+//            System.out.println();
             ans += price * distSum;
         }
 
