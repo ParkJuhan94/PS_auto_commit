@@ -1,3 +1,5 @@
+//package Programmers.Level_3.숫자게임;
+
 import java.util.Collections;
 import java.util.PriorityQueue;
 
@@ -19,6 +21,7 @@ class Solution {
                 break;
             }
 
+            // B에서 가장 높은 점수에 근접한 A의 점수를 찾는 로직
             if(pqA.peek() < pqB.peek()){
                 pqA.poll();
                 pqB.poll();
