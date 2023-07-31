@@ -1,36 +1,34 @@
-//package Programmers.Level_3.숫자게임;
-
-import java.util.Collections;
-import java.util.PriorityQueue;
+import java.util.*;
 
 class Solution {
     public int solution(int[] A, int[] B) {
-        int answer = 0;
-
-        // 1 3 5 7
-        // 2 2 6 8
-        PriorityQueue<Integer> pqA = new PriorityQueue<>(Collections.reverseOrder());
-        PriorityQueue<Integer> pqB = new PriorityQueue<>(Collections.reverseOrder());
-        for(int i = 0; i < A.length; i++){
-            pqA.add(A[i]);
-            pqB.add(B[i]);
+        //a를 내림차순 정렬, b를 내림차순 정렬
+        
+        List<Integer> listA = new ArrayList<>();
+        Deque<Integer> q = new ArrayDeque<>();
+        
+        Arrays.sort(A);
+        Arrays.sort(B);
+        
+        for(int i = A.length-1; i>=0; i--) {
+            listA.add(A[i]);
         }
-
-        while(true){
-            if(pqA.isEmpty()){
-                break;
-            }
-
-            // B에서 가장 높은 점수에 근접한 A의 점수를 찾는 로직
-            if(pqA.peek() < pqB.peek()){
-                pqA.poll();
-                pqB.poll();
-                answer++;
-            }else{
-                pqA.poll();
+    
+        for(int i = B.length-1; i>=0; i--) {
+            q.addLast(B[i]);
+        }
+        
+        int result = 0;
+        
+        for(int i = 0; i<listA.size(); i++) {
+            if(listA.get(i) < q.peek() ){
+                q.pollFirst();
+                result++;
             }
         }
-
-        return answer;
+        
+        return result;
+        
+        
     }
 }
