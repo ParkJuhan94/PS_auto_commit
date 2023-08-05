@@ -16,12 +16,18 @@ class Solution {
 
         int end = routes[0][1];    // 현재까지 체크한 루트의 진출 지점
         answer = 1;
-        for(int i = 1; i < routes.length; i++){
+
+        // 카메라가 다음 루트에 포함되면서 && 제일 뒤로 배치되도록 한다
+        for(int i = 1; i < routes.length; i++)
+        {
             int[] route = routes[i];
+
+            // 포함된다면 : 제일 뒤로 배치
             if(end >= route[1]){
                 end = route[1];
             }
-            if(end < route[0]){
+            // 포함 안되면 : answer++ 하고 제일 뒤로 배치
+            else if(end < route[0]){
                 end = route[1];
                 answer++;
             }
