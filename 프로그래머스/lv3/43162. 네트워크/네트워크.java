@@ -1,26 +1,47 @@
+import java.util.ArrayList;
+
 class Solution {
-  public int solution(int n, int[][] computers) {
-    int answer = 0;
-    boolean[] check = new boolean[n]; // n 갯수만큼 boolean 배열을 만들고 모든 요소를 false로 초기화
+    ArrayList<Integer>[] adj;
+    int[] ch;
+    int n;
+    int answer;
 
-    for (int i = 0; i < n; i++) {
-      if (!check[i]) {
-        dfs(computers, i, check);
-        answer++;
-      }
+    public int solution(int n, int[][] computers) {
+        this.n = n;
+        adj = new ArrayList[n];
+        for(int i = 0; i < n; i++){
+            adj[i] = new ArrayList<>();
+        }
+        ch = new int[n];
+        for(int i = 0 ; i < n; i++){
+            for(int j = 0; j < n; j++){
+                if(i != j && computers[i][j] == 1){
+                    adj[i].add(j);
+                }
+            }
+        }
+
+        for(int i = 0; i < n; i++){
+            if(ch[i] == 0){
+                answer++;
+            }
+            ch[i] = 1;
+            dfs(i);
+        }
+
+        return answer;
     }
 
-    return answer;
-  }
+    void dfs(int idx) 
+    {
+        for(int i = 0; i < adj[idx].size(); i++){
+            int next = adj[idx].get(i);
+            
+            if(ch[next] == 0){
+                ch[next] = 1;
+                dfs(next);
+            }
+        }
 
-  boolean[] dfs(int[][] computers, int i, boolean[] check) {
-    check[i] = true;
-
-    for (int j = 0; j < computers.length; j++) {
-      if (i != j && computers[i][j] == 1 && check[j] == false) {
-        check = dfs(computers, j, check);
-      }
     }
-    return check;
-  }
 }
