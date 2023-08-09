@@ -12,8 +12,8 @@ class Solution {
     public int solution(int m, int n, int[][] puddles) {
         this.n = n;
         this.m = m;
-        map = new int[101][101];
-        ch = new int[101][101];
+        map = new int[n][m];
+        ch = new int[n][m];
         for(int i = 0; i < n; i++){
             Arrays.fill(map[i], -1);
         }
@@ -24,7 +24,7 @@ class Solution {
 
         int ans = dfs(0, 0) % MOD;
 
-    //    printMap();
+        //printMap();
 
         return ans;
     }
