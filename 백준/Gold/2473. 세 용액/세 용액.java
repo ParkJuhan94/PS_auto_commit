@@ -49,10 +49,13 @@ public class Main {
                     ansArr[2] = nums[right];
                 }
 
-                if (sum >= 0) {
+                if (sum > 0) {
                     right--;
-                } else {
+                } else if (sum < 0) {
                     left++;
+                } else {
+                    i = N;
+                    break;   
                 }
             }
         }
