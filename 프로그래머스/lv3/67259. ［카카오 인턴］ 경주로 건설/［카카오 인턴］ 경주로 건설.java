@@ -22,11 +22,6 @@ class Solution {
 
         //printDist();
 
-//        if(N == 5){
-//            System.out.println(dist[3][3]);
-//            System.out.println(dist[4][3]);
-//        }
-
         return answer;
     }
 
@@ -64,6 +59,8 @@ class Solution {
                         nextCost = cost + 600;
                     }
 
+                    // counterDir 방향에서의 첫 방문이거나
+                    // nextCost 가 해당값보다 이하일 때
                     if(!visited[nr][nc][counterDir] || nextCost <= dist[nr][nc]){
                         visited[nr][nc][counterDir] = true;
                         dist[nr][nc] = nextCost;
