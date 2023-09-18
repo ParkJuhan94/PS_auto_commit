@@ -27,10 +27,7 @@ class Solution {
 
     void bfs() {
         Queue<Point> q = new LinkedList<>();
-        q.add(new Point(0, 0, -1, 0));
-        // for(int i = 0; i < 4; i++){
-        //     visited[0][0][i] = true;
-        // }
+        q.add(new Point(0, 0, -1, 0));      
 
         while(!q.isEmpty())
         {
