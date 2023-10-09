@@ -1,7 +1,9 @@
 // package Programmers.Level_3.파괴되지않은건물;
 
-// N = 1000
-// M = 250,000
+// N, M = 1000
+// K = 250,000
+// O(K + N * M)
+// 2차원배열 누적합
 
 class Solution {
     public static int[][] sums;
