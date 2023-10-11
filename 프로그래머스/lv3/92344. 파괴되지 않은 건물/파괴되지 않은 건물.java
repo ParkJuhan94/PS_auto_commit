@@ -2,6 +2,8 @@
 
 // N = 1000
 // M = 250,000
+// O(K + N * M)
+// 2차원배열 누적합
 
 class Solution {
     public static int[][] sums;
