@@ -1,4 +1,4 @@
-//package DAY03.P1927;
+//package BOJ.Section08.P1927;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -11,7 +11,7 @@ public class Main {
     static int N;
 
     public static void main(String[] args) throws IOException {
-       // System.setIn(new FileInputStream("src/DAY03/P1927/input.txt"));
+     //   System.setIn(new FileInputStream("src/BOJ/Section08/P1927/input.txt"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         N = Integer.parseInt(br.readLine());
         MinHeap mh = new MinHeap();
@@ -46,7 +46,7 @@ class MinHeap {
             if (parent == 0 || list.get(parent) <= list.get(current)) {
                 break;
             }
-
+            // Swap
             int temp = list.get(parent);
             list.set(parent, list.get(current));
             list.set(current, temp);
@@ -54,14 +54,13 @@ class MinHeap {
             current = parent;
             parent = current / 2;
         }
-        //System.out.println(val + " 삽입 끝");
     }
 
     public int delete() {
-        if (list.size() == 1) {
+        if (list.size() == 1) { // 문제 조건 : delete 할 때 힙이 비었으면 0 출력
             return 0;
         }
-        // 1. Root 에 leaf 마지막 데이터 가져옴
+        // 1. Root 노드를 삭제하고 마지막 leaf 노드로 대체
         int top = list.get(1);
         list.set(1, list.get(list.size() - 1));
         list.remove(list.size() - 1);
@@ -69,15 +68,15 @@ class MinHeap {
         // 2. 자식과 비교 후 조건이 맞지 않으면 swap
         // 3. 조건이 만족되거나 leaf 까지 반복
         int currentPos = 1;
+
         while (true) {
             int leftPos = currentPos * 2;
             int rightPos = currentPos * 2 + 1;
-            // 왼쪽 자식 먼저 확인
 
+            // 왼쪽 자식 먼저 확인
             if (leftPos >= list.size()) {
                 break;
             }
-
             int minValue = list.get(leftPos);
             int minPos = leftPos;
 
@@ -87,7 +86,7 @@ class MinHeap {
                 minPos = rightPos;
             }
 
-            // Swap
+            // 왼쪽 or 오른쪽 자식중 더 작은 값을 가진 노드는 부모와 Swap
             if (list.get(currentPos) > minValue) {
                 int temp = list.get(currentPos);
                 list.set(currentPos, list.get(minPos));
@@ -96,7 +95,6 @@ class MinHeap {
 
             currentPos = minPos;
         }
-        //System.out.println(top + " 제거 끝");
         return top;
     }
 }
