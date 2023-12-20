@@ -1,53 +1,51 @@
-//package BOJ.Section07.P20006;
+package BOJ.Section08.P20006;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.StringTokenizer;
 
 public class Main {
     static int p, m;
-    static ArrayList<Player> playerList;
+    static ArrayList<Player> players;
 
     public static void main(String[] args) throws IOException {
-      //  System.setIn(new FileInputStream("src/BOJ/Section07/P20006/input.txt"));
+         System.setIn(new FileInputStream("src/BOJ/Section08/P20006/input.txt"));
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
 
         p = Integer.parseInt(st.nextToken());
         m = Integer.parseInt(st.nextToken());
-        playerList = new ArrayList<>();
+        players = new ArrayList<>();
         for(int i = 0; i < p; i++){
             st = new StringTokenizer(br.readLine());
             int level = Integer.parseInt(st.nextToken());
             String nick = st.nextToken();
 
-            playerList.add(new Player(level, nick));
+            players.add(new Player(level, nick));
         }
-
-        // 방의 레벨 중간값이 들어있는 리스트
+        
         ArrayList<Room> roomList = new ArrayList<>();
 
         for(int i = 0; i < p; i++){
-            Player player = playerList.get(i);
-            boolean isPossible = false;
+            Player player = players.get(i);
+            boolean isPossibleEnter = false;
 
             for(Room room : roomList){
-                if(room.average - 10 <= player.level && player.level <= room.average + 10
+                if(room.firstPlayerLevel - 10 <= player.level && player.level <= room.firstPlayerLevel + 10
                     && room.players.size() < m){
 
                     room.players.add(player);
-                    isPossible = true;
+                    isPossibleEnter = true;
                     break;
                 }
             }
 
-            if(!isPossible){
+            if(!isPossibleEnter){
                 Room newRoom = new Room(player.level);
                 roomList.add(newRoom);
                 newRoom.players.add(player);
@@ -93,11 +91,11 @@ class Player implements Comparable<Player>{
 }
 
 class Room{
-    int average;
+    int firstPlayerLevel;
     ArrayList<Player> players = new ArrayList<>();
 
-    public Room(int average) {
-        this.average = average;
+    public Room(int firstPlayerLevel) {
+        this.firstPlayerLevel = firstPlayerLevel;
     }
 
     void sortPlayers(){
