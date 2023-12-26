@@ -1,3 +1,4 @@
+// package Programmers.Level_3_2.추석트래픽;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -12,17 +13,17 @@ class Solution {
 		initialLogs(lines);
 
 		for (int i = 0; i < logs.size(); i++) {
-			int numTask = 1;
+			int possibleLogNum = 1;
 			Log curLog = logs.get(i);
 
 			for (int j = i + 1; j < logs.size(); j++) {
 				Log nextLog = logs.get(j);
 				if (curLog.end.getTime() > nextLog.start.getTime() - 1000) {
-					numTask++;
+					possibleLogNum++;
 				}
 			}
 
-			answer = Math.max(answer, numTask);
+			answer = Math.max(answer, possibleLogNum);
 		}
 
 		return answer;
