@@ -21,10 +21,10 @@ class Solution {
 				controller.add(jobs[idx++]);
 			}
 
-			int[] work = controller.poll();
-			time += work[1];
+			int[] job = controller.poll();
+			time += job[1];
 
-			answer += time - work[0];
+			answer += time - job[0];
 		}
 
 		return answer / jobs.length;
