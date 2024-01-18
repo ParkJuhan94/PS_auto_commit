@@ -10,7 +10,6 @@ import java.util.StringTokenizer;
 public class Main {
 	static int N, D;
 	static Road[] roads;
-	static boolean[] visited;
 	static int answer;
 
 	public static void main(String[] args) throws IOException {
@@ -22,7 +21,6 @@ public class Main {
 		N = Integer.parseInt(st.nextToken());
 		D = Integer.parseInt(st.nextToken());
 		roads = new Road[N];
-		visited = new boolean[N];
 		answer = D;
 
 		for (int i = 0; i < N; i++) {
@@ -54,10 +52,8 @@ public class Main {
 			Road road = roads[i];
 
 			// 지름길 가기
-			if (cur == road.start && !visited[i]) {
-				visited[i] = true;
+			if (cur == road.start) {
 				dfs(road.end, driving + road.len);
-				visited[i] = false;
 			}
 		}
 
