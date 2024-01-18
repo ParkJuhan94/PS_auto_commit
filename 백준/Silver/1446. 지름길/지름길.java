@@ -1,10 +1,10 @@
-//package BOJ.Section09.P1446;
+package BOJ.Section09.P1446;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Dictionary;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -13,7 +13,7 @@ public class Main {
 	static int answer;
 
 	public static void main(String[] args) throws IOException {
-		//System.setIn(new FileInputStream("src/BOJ/Section09/P1446/input.txt"));
+		System.setIn(new FileInputStream("src/BOJ/Section09/P1446/input.txt"));
 
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
@@ -33,12 +33,15 @@ public class Main {
 			roads[i] = road;
 		}
 
+		Arrays.sort(roads);
+
 		dfs(0, 0);
 
 		System.out.println(answer);
 	}
 
 	static void dfs(int cur, int driving) {
+		System.out.println("dfs(" + cur + ", " + driving + ")");
 		if (cur == D) {
 			answer = Math.min(answer, driving);
 			return;
@@ -58,11 +61,21 @@ public class Main {
 		}
 
 		// 지름길 안 가기
-		dfs(cur + 1, driving + 1);
+		int next = nextRoadStart(cur);
+		dfs(next, driving + (next - cur));
+	}
+
+	static int nextRoadStart(int cur) {
+		for (int i = 0; i < N; i++) {
+			if (roads[i].start > cur) {
+				return roads[i].start;
+			}
+		}
+		return cur + 1;
 	}
 }
 
-class Road {
+class Road implements Comparable<Road> {
 	int start;
 	int end;
 	int len;
@@ -71,5 +84,10 @@ class Road {
 		this.start = start;
 		this.end = end;
 		this.len = len;
+	}
+
+	@Override
+	public int compareTo(Road o) {
+		return start - o.start;
 	}
 }
