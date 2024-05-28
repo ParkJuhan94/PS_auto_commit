@@ -44,6 +44,7 @@ public class Main {
 				for (int j = 0; j < W; j++) {
 					if(board[i][j] == 1 && !visited[i][j]) {
 						bfs(i, j);
+						ans++;
 					}
 				}
 			}
@@ -56,11 +57,6 @@ public class Main {
 		Queue<Point> q = new LinkedList<>();
 		q.add(new Point(r, c));
 		visited[r][c] = true;
-		boolean isIsland = false;
-
-		if(board[r][c] == 1) {
-			isIsland = true;
-		}
 
 		while (!q.isEmpty()) {
 			Point cur = q.poll();
@@ -74,13 +70,8 @@ public class Main {
 				) {
 					q.add(new Point(nr, nc));
 					visited[nr][nc] = true;
-					isIsland = true;
 				}
 			}
-		}
-
-		if(isIsland) {
-			ans++;
 		}
 	}
 }
