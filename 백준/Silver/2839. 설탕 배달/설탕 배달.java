@@ -1,54 +1,50 @@
-//package WEEK20.P2839;
+//package BOJ.Section10.P2839;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.StringTokenizer;
 
 public class Main {
-    static int N;
+	static int N;
 
-    public static void main(String[] args) throws IOException {
-      //  System.setIn(new FileInputStream("src/WEEK20/P2839/input.txt"));
+	public static void main(String[] args) throws IOException {
+	//	System.setIn(new FileInputStream("src/BOJ/Section10/P2839/input.txt"));
 
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        int sugar, cnt = 0;
-        sugar = Integer.parseInt(st.nextToken());
+		N = Integer.parseInt(br.readLine());
+		int[] dp = new int[N + 1];
 
-        /*
-        먼저 3키로씩 빼다가 5키로로 나누어 떨어지는 순간 계산하여 break;
-         */
-        while (true)
-        {
-            if (sugar % 5 == 0)
-            {
-                cnt += sugar / 5;
-                System.out.println(cnt);
-                break;
-            }
+		if (N >= 3) {
+			dp[3] = 1;
+		}
 
-            sugar -= 3;
-            cnt++;
+		if (N >= 5) {
+			dp[5] = 1;
+		}
 
-            // 3키로랑 5키로 둘 다 안되는 경우
-            if (sugar <= -1)
-            {
-                System.out.println(-1);
-                break;
-            }
-        }
-    }
+		for (int i = 6; i <= N; i++) {
+			int from3 = Integer.MAX_VALUE;
+			int from5 = Integer.MAX_VALUE;
+
+			if (dp[i - 3] != 0) {
+				from3 = dp[i - 3] + 1;
+			}
+			if (dp[i - 5] != 0) {
+				from5 = dp[i - 5] + 1;
+			}
+
+			if (from3 != Integer.MAX_VALUE || from5 != Integer.MAX_VALUE) {
+				dp[i] = Math.min(from3, from5);
+			}
+		}
+
+		if (dp[N] == 0) {
+			System.out.println(-1);
+		} else {
+			System.out.println(dp[N]);
+		}
+	}
 
 }
-
-
-
-
-
-
-
-
-
